@@ -18,7 +18,7 @@ Pod::Spec.new do |spec|
   spec.author      = "Facebook"
   # This env var should be supplied with a CDN URL for hermes-runtime-darwin.tgz on the Github releases before pod push.
   # The podspec would be serialized to JSON and people will download prebuilt binaries instead of the source.
-  spec.source      = ENV['hermes-artifact-url'] ? { http: ENV['hermes-artifact-url'] } : { git: "https://github.com/facebook/hermes.git", tag: "v#{spec.version}" }
+  spec.source      = ENV['hermes-artifact-url'] ? { http: ENV['hermes-artifact-url'] } : { git: "https://github.com/espe-org/hermes.git", branch: "arm64" }
   spec.platforms   = { :osx => "10.13", :ios => "10.0" }
 
   spec.preserve_paths      = ["destroot/bin/*"].concat(HermesHelper::BUILD_TYPE == :debug ? ["**/*.{h,c,cpp}"] : [])
