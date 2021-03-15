@@ -85,23 +85,28 @@ function build_apple_framework {
 function create_universal_framework {
   cd ./destroot/Library/Frameworks || exit 1
 
-  local platforms=("$@")
+  #local platforms=("$@")
 
-  echo "Creating universal framework for platforms: ${platforms[*]}"
+  #echo "Creating universal framework for platforms: ${platforms[*]}"
 
-  for i in "${!platforms[@]}"; do
-    platforms[$i]="${platforms[$i]}/hermes.framework/hermes"
-  done
+  #for i in "${!platforms[@]}"; do
+  #  platforms[$i]="${platforms[$i]}/hermes.framework/hermes"
+  #done
 
-  lipo -create -output "${platforms[0]}" "${platforms[@]}"
+  #lipo -create -output "${platforms[0]}" "${platforms[@]}"
 
   # Once all was linked into a single framework, clean destroot
   # from unused frameworks
-  for platform in "${@:2}"; do
-    rm -r "$platform"
-  done
+  #for platform in "${@:2}"; do
+  #  rm -r "$platform"
+  #done
 
-  lipo -info "${platforms[0]}"
+  #lipo -info "${platforms[0]}"
+
+  xcodebuild -create-xcframework -framework iphoneos/hermes.framework -framework iphonesimulator/hermes.framework -output iphoneos/hermes.xcframework
+
+  rm -r iphonesimulator
+  rm -r iphoneos/hermes.framework
 
   cd - || exit 1
 }
