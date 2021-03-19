@@ -39,8 +39,11 @@ function get_mac_deployment_target {
 
 # Utility function to configure an Apple framework
 function configure_apple_framework {
-  local build_cli_tools enable_bitcode
-  if [[ $1 == iphoneos ]]; then
+  local build_cli_tools enable_bitcode 
+  local catalyst="false"
+  local platform=$1
+  
+  if [[ $1 == iphoneos || $1 == catalyst ]]; then
     enable_bitcode="true"
   else
     enable_bitcode="false"
@@ -50,11 +53,16 @@ function configure_apple_framework {
   else
     build_cli_tools="false"
   fi
+  if [[ $1 == catalyst ]]; then
+    catalyst="true"
+    platform="macosx"
+  fi
 
   local cmake_flags=" \
-    -DHERMES_APPLE_TARGET_PLATFORM:STRING=$1 \
+    -DHERMES_APPLE_TARGET_PLATFORM:STRING=$platform \
     -DCMAKE_OSX_ARCHITECTURES:STRING=$2 \
     -DCMAKE_OSX_DEPLOYMENT_TARGET:STRING=$3 \
+    -DHERMES_APPLE_CATALYST:BOOLEAN=$catalyst \
     -DHERMES_ENABLE_DEBUGGER:BOOLEAN=true \
     -DHERMES_ENABLE_FUZZING:BOOLEAN=false \
     -DHERMES_ENABLE_TEST_SUITE:BOOLEAN=false \
